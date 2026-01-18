@@ -17,7 +17,7 @@ empty_dot = '○'
 archetypes = {
     "Specialist": (50, 13, 10),
     "Balanced": (25, 24, 24),
-    "Wildcard": (11, 31, 31)
+    "Wildcard": (11, 31, 31) 
 }
 
 def create_character(name, strength, intelligence, charisma):
