@@ -23,6 +23,7 @@ archetypes = {
 
 # ---------- LOGIC ----------
 def create_character(name, strength, intelligence, charisma, fail_count):
+    # --- Name validation ---
     if not isinstance(name, str) or name.strip() == "":
         return "The character should have a name 🥹", fail_count
     if len(name) > 10:
@@ -30,6 +31,7 @@ def create_character(name, strength, intelligence, charisma, fail_count):
     if " " in name:
         return "The character name should not contain spaces 🙄", fail_count
 
+    # --- Stat validation ---
     for stat in (strength, intelligence, charisma):
         if not isinstance(stat, int):
             return "All stats should be integers 😤", fail_count
@@ -49,6 +51,7 @@ def create_character(name, strength, intelligence, charisma, fail_count):
         )
         return message, fail_count
 
+    # --- Check archetypes ---
     exact_match = None
     partial_match = False
     for arch, stats in archetypes.items():
@@ -57,6 +60,7 @@ def create_character(name, strength, intelligence, charisma, fail_count):
         elif sorted((strength, intelligence, charisma)) == sorted(stats):
             partial_match = True
 
+    # --- Partial match hint ---
     if partial_match and not exact_match:
         return (
             "You were smart to figure out the numbers, but not enough "
@@ -64,11 +68,13 @@ def create_character(name, strength, intelligence, charisma, fail_count):
             "To unlock them, find the correct order of the numbers! 😉", fail_count
         )
 
+    # --- Final archetype ---
     archetype_name = exact_match if exact_match else "Custom Build"
 
     max_dots = 10
     def scale(x): return int(x / 100 * max_dots)
 
+    # --- Dot representation ---
     result = f"{name} ({archetype_name})\n"
     result += "STR " + full_dot * scale(strength) + empty_dot * (max_dots - scale(strength)) + "\n"
     result += "INT " + full_dot * scale(intelligence) + empty_dot * (max_dots - scale(intelligence)) + "\n"
